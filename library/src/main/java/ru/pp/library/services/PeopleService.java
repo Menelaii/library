@@ -1,7 +1,6 @@
 package ru.pp.library.services;
 
-import java.util.Collections;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,13 +14,15 @@ import ru.pp.library.entities.Person;
 import ru.pp.library.exceptions.NotFoundException;
 import ru.pp.library.repositories.PeopleRepository;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 @Service
 @Transactional(readOnly = true)
 public class PeopleService {
 
     @Value("${books.expiredAfter}")
-    private long expiredAfter;
-    private PeopleRepository peopleRepository;
+    private int expiredAfterInDays;
+    private final PeopleRepository peopleRepository;
 
     @Autowired
     public PeopleService(PeopleRepository peopleRepository) {
@@ -39,8 +40,7 @@ public class PeopleService {
             Hibernate.initialize(person.get().getBooks());
             person.get().getBooks().forEach(
                     book -> {
-                        long millis = Math.abs(book.getTakenAt().getTime() - new Date().getTime());
-                        if(millis > expiredAfter) {
+                        if(DAYS.between(book.getTakenAt(),LocalDate.now()) > expiredAfterInDays) {
                             book.setExpired(true);
                         }
                     });

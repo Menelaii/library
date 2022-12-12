@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Новый автор</title>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>Добавить</h1>
+
+  <form th:method="POST" th:action="@{/authors}" th:object="${author}">
+    <input type="text" placeholder="Псевдоним" th:field="*{alias}">
+    <input type="submit">
+  </form>
+
+  <hr>
+  <a href="/authors">Назад</a>
+</div>
+
+</body>
+</html>

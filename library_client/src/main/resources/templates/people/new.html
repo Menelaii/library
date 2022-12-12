@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Новый человек</title>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+<div class="container">
+  <h1>Добавить</h1>
+
+  <form th:method="POST" th:action="@{/people}" th:object="${person}">
+      <input type="text" placeholder="Иванов Иван Иванович" th:field="*{fullName}">
+      <input type="text" placeholder="02/03/3000" th:field="*{dateOfBirth}">
+      <input type="submit">
+  </form>
+
+  <hr>
+  <a href="/people">Назад</a>
+</div>
+</body>
+</html>

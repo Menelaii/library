@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Люди</h1>
+    <th:block th:each="person : ${people}">
+        <a th:href="@{/people/{id}(id=${person.getId()})}"
+           th:text="${person.getFullName()}"/>
+    </th:block>
+    <hr>
+    <a href="/people/new">Добавить</a>
+    <a href="/">Назад</a>
+</div>
+</body>
+</html>

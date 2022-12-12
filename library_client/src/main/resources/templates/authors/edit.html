@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактировать автора</title>
+  <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>Редактировать</h1>
+
+  <form th:method="patch" th:action="@{/authors}" th:object="${author}">
+    <input type="text" placeholder="Псевдоним" th:field="*{alias}">
+    <input type="submit">
+  </form>
+
+  <hr>
+  <a th:href="@{/authors/{id}(id=${author.getId()})}">Назад</a>
+</div>
+
+</body>
+</html>

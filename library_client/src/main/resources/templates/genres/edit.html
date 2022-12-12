@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать жанр</title>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Редактировать</h1>
+
+    <form th:method="patch" th:action="@{/genres}" th:object="${genre}">
+        <input type="text" placeholder="Название" th:field="*{name}">
+        <input type="submit">
+    </form>
+
+    <hr>
+    <a th:href="@{/genres/{id}(id=${genre.getId()})}">Назад</a>
+</div>
+
+</body>
+</html>

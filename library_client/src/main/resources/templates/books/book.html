@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+
+<div class="container" th:object="${book}">
+    <h1>Книга</h1>
+
+    <p th:text="*{'Название: ' + name}">ФИО: Иванов Иван Иванович</p>
+    <p th:text="*{'Издатель: ' + publisherName}">Издатель: ...</p>
+
+    <a th:href="@{/genres/{id}(id=*{genre.getId()})}"
+       th:text="*{'Жанр: ' + genre.getName()}">Жанр: ...</a>
+
+    <a th:href="@{/authors/{id}(id=*{author.getId()})}"
+       th:text="*{'Автор: ' + author.getAlias()}">Автор: ...</a>
+
+    <th:block th:if="*{currentOwner == null}">
+        <form th:action="@{/books/{id}/assign(id=*{id})}" th:method="patch">
+            <label>Книга свободна. Кому её назначить?
+                <select th:object="${person}" th:field="*{id}">
+                    <option th:each="person : ${people}" th:value="${person.getId()}"
+                            th:text="${person.getFullName()}"></option>
+                </select>
+            </label>
+
+            <input type="submit" value="Назначить">
+        </form>
+    </th:block>
+
+    <th:block th:unless="*{currentOwner == null}">
+        <p th:text="*{'Сейчас книга у: ' + currentOwner.getFullName()}"><p/>
+        <form th:action="@{/books/{id}/release(id=*{id})}" th:method="patch">
+            <input type="submit" value="Освободить книгу">
+        </form>
+    </th:block>
+
+    <hr>
+
+    <form th:action="@{/books/{id}/edit(id=*{id})}">
+        <input type="submit" value="Редактировать">
+    </form>
+
+    <form th:method="DELETE" th:action="@{/books/{id}(id=*{id})}">
+        <input type="submit" value="Удалить">
+    </form>
+
+    <form action="/books">
+        <input type="submit" value="Назад">
+    </form>
+</div>
+
+</body>
+</html>

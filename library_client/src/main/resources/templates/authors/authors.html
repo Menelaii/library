@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Авторы</h1>
+    <th:block th:each="author : ${authors}">
+        <a th:href="@{/authors/{id}(id=${author.getId()})}"
+           th:text="${author.getAlias()}"/>
+    </th:block>
+
+    <hr>
+    <a href="/authors/new">Добавить</a>
+    <a href="/">Назад</a>
+</div>
+
+</body>
+</html>

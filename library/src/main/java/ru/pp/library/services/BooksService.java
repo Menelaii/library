@@ -1,5 +1,6 @@
 package ru.pp.library.services;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +63,7 @@ public class BooksService {
         booksRepository.findById(id).ifPresent(
                 book -> {
                     book.setCurrentOwner(person);
-                    book.setTakenAt(new Date());
+                    book.setTakenAt(LocalDate.now());
                 });
     }
 

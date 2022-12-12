@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+<div class="container" th:object="${genre}">
+    <h1>Жанр</h1>
+
+    <p th:text="*{'Название: ' + name}"/>
+
+    <hr>
+
+    <form th:action="@{/genres/{id}/edit(id=*{id})}" th:method="get">
+        <input type="submit" value="Редактировать">
+    </form>
+
+    <form th:action="@{/genres/{id}(id=*{id})}" th:method="delete">
+        <input type="submit" value="Удалить">
+    </form>
+
+    <form action="/genres">
+        <input type="submit" value="Назад">
+    </form>
+</div>
+</body>
+</html>

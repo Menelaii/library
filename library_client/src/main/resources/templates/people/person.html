@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+
+<div class="container" th:object="${person}">
+    <h1>Человек</h1>
+
+    <p th:text="*{'ФИО: ' + fullName}">ФИО: Иванов Иван Иванович</p>
+    <p th:text="*{'Дата рождения: ' + dateOfBirth}">Дата рождения: 12/04/2002</p>
+
+    <div th:if="*{books.isEmpty()}">
+        <p>Человек пока не взял ни одной книги</p>
+    </div>
+
+    <div th:unless="*{books.isEmpty()}">
+        <p>Книги:</p>
+        <th:block th:each="book : *{books}">
+            <a  th:href="@{/books/{id}(id=${book.getId()})}"
+                    th:text="${book.getName()}"/>
+        </th:block>
+    </div>
+
+    <hr>
+
+    <form th:action="@{/people/{id}/edit(id=*{id})}">
+        <input type="submit" value="Редактировать">
+    </form>
+
+    <form th:method="DELETE" th:action="@{/people/{id}(id=*{id})}">
+        <input type="submit" value="Удалить">
+    </form>
+
+    <form action="/people">
+        <input type="submit" value="Назад">
+    </form>
+</div>
+
+</body>
+</html>

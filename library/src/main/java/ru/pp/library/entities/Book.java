@@ -1,47 +1,46 @@
 package ru.pp.library.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "Book")
 public class Book extends AbstractEntity {
 
     @NotEmpty(message = "Название не должно быть пустым")
-    @Size(min = 0, max = 120, message = "ФИО должно быть больше 0 и меньше 120 символов")
+    @Size(min = 0, max = 120, message = "Название должно быть больше 0 и меньше 120 символов")
     @Column(name = "name", unique = true)
     private String name;
 
-    @Email
     @NotEmpty(message = "Название издательства не должно быть пустым")
     @Size(max = 120, message = "Название издательства должно быть меньше 120 символов")
     @Column(name = "publisher_name")
     private String publisherName;
 
-    @NotEmpty(message = "Автор не должен быть пустым")
+    @NotNull(message = "Автор не должен быть пустым")
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private Author author;
 
-    @NotEmpty(message = "Жанр не должен быть пустым")
+    @NotNull(message = "Жанр не должен быть пустым")
     @ManyToOne
     @JoinColumn(name = "genre_id", referencedColumnName = "id")
     private Genre genre;
-
-    @NotEmpty(message = "Изображение не должно быть пустым")
-    @OneToOne(mappedBy = "book")
-    private Image image;
 
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person currentOwner;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "taken_at")
-    private Date takenAt;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @Column(name = "taken_at", columnDefinition = "DATE")
+    private LocalDate takenAt;
 
     @Transient
     private boolean expired;
@@ -81,14 +80,6 @@ public class Book extends AbstractEntity {
         this.genre = genre;
     }
 
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
-    }
-
     public Person getCurrentOwner() {
         return currentOwner;
     }
@@ -97,11 +88,11 @@ public class Book extends AbstractEntity {
         this.currentOwner = currentOwner;
     }
 
-    public Date getTakenAt() {
+    public LocalDate getTakenAt() {
         return takenAt;
     }
 
-    public void setTakenAt(Date takenAt) {
+    public void setTakenAt(LocalDate takenAt) {
         this.takenAt = takenAt;
     }
 

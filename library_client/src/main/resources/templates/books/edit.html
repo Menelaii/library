@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать книгу</title>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Редактировать</h1>
+
+    <form th:method="patch" th:action="@{/books/{id}(id=*{id})}" th:object="${book}">
+        <input type="text" placeholder="Название" th:field="*{name}">
+        <input type="text" placeholder="Издатель" th:field="*{publisherName}">
+
+        <label>
+            Автор
+            <select th:field="*{author.id}">
+                <option th:each="author : ${authors}"
+                        th:value="${author.getId()}" th:text="${author.getAlias()}"></option>
+            </select>
+        </label>
+
+        <label>
+            Жанр
+            <select th:field="*{genre.id}">
+                <option th:each="genre : ${genres}"
+                        th:value="${genre.getId()}" th:text="${genre.getName()}"></option>
+            </select>
+        </label>
+
+        <input type="submit">
+    </form>
+
+    <hr>
+    <a th:href="@{/books/{id}(id=${book.getId()})}">Назад</a>
+</div>
+
+
+</body>
+</html>

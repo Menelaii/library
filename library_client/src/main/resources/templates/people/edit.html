@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/../styles/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Редактировать</h1>
+
+    <form th:method="patch" th:action="@{/people/{id}(id=*{id})}" th:object="${person}">
+        <input type="text" placeholder="Иванов Иван Иванович" th:field="*{fullName}">
+        <input type="text" placeholder="02/03/3000" th:field="*{dateOfBirth}">
+        <input type="submit">
+    </form>
+
+    <hr>
+    <a th:href="@{/people/{id}(id=${person.getId()})}">Назад</a>
+</div>
+
+</body>
+</html>

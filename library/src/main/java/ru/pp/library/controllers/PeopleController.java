@@ -1,9 +1,11 @@
 package ru.pp.library.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ru.pp.library.dto.PersonDTO;
+import ru.pp.library.dto.RichPersonDTO;
 import ru.pp.library.entities.Person;
 import ru.pp.library.services.PeopleService;
 
@@ -24,30 +28,35 @@ import ru.pp.library.services.PeopleService;
 @RequestMapping("/people")
 public class PeopleController extends AbstractController {
     
-    private PeopleService peopleService;
+    private final PeopleService peopleService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public PeopleController(PeopleService peopleService) {
+    public PeopleController(PeopleService peopleService, ModelMapper modelMapper) {
         this.peopleService = peopleService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping
-    public List<Person> getPeople() {
-        return peopleService.findAll();
+    public List<PersonDTO> getPeople() {
+        return peopleService.findAll()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public Person getPerson(@PathVariable("id") int id) {
-        return peopleService.findOne(id);
+    public RichPersonDTO getPerson(@PathVariable("id") int id) {
+        return convertToRichDTO(peopleService.findOne(id));
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid Person person,
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid RichPersonDTO richPersonDTO,
         BindingResult bindingResult) {
 
         throwInvalidIfHasErrors(bindingResult);
 
-        peopleService.save(person);
+        peopleService.save(convertToEntity(richPersonDTO));
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -59,13 +68,26 @@ public class PeopleController extends AbstractController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<HttpStatus> update(@PathVariable("id") int id, @RequestBody @Valid Person person,
-        BindingResult bindingResult) {
+    public ResponseEntity<HttpStatus> update(@PathVariable("id") int id,
+                                             @RequestBody @Valid RichPersonDTO richPersonDTO,
+                                             BindingResult bindingResult) {
 
         throwInvalidIfHasErrors(bindingResult);
 
-        peopleService.update(id, person);
+        peopleService.update(id, convertToEntity(richPersonDTO));
 
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    private PersonDTO convertToDTO(Person person) {
+        return modelMapper.map(person, PersonDTO.class);
+    }
+
+    private RichPersonDTO convertToRichDTO(Person person) {
+        return modelMapper.map(person, RichPersonDTO.class);
+    }
+
+    private Person convertToEntity(RichPersonDTO richPersonDTO) {
+        return modelMapper.map(richPersonDTO, Person.class);
     }
 }
