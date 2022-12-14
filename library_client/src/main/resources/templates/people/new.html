@@ -2,21 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Новый человек</title>
-    <link rel="stylesheet" href="../styles/style.css">
+    <title>Создать</title>
+    <link rel="stylesheet" href="/../styles/style.css">
 </head>
 <body>
 <div class="container">
-  <h1>Добавить</h1>
+    <div class="title">
+        <h1 class="title__h1">Создать</h1>
+        <hr class="title__hr">
+    </div>
 
-  <form th:method="POST" th:action="@{/people}" th:object="${person}">
-      <input type="text" placeholder="Иванов Иван Иванович" th:field="*{fullName}">
-      <input type="text" placeholder="02/03/3000" th:field="*{dateOfBirth}">
-      <input type="submit">
-  </form>
+    <form class="main-menu main-menu_entity" th:method="POST" th:action="@{/people}" th:object="${person}">
 
-  <hr>
-  <a href="/people">Назад</a>
+        <input class="menu-item text-input" type="text" placeholder="Иванов Иван Иванович" th:field="*{fullName}">
+
+        <input class="menu-item text-input" type="text" placeholder="02/03/3000" th:field="*{dateOfBirth}">
+
+        <div class="menu-item menu-item_entities">
+            <input class="menu-item__button menu-item__text" type="submit">
+        </div>
+    </form>
+
+    <div class="main-menu main-menu_entities main-menu_entities_no-margin">
+        <div class="menu-item menu-item_entities">
+            <a href="/people" class="menu-item__text">Назад</a>
+        </div>
+    </div>
 </div>
 </body>
 </html>

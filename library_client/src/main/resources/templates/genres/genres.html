@@ -3,21 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="/../styles/style.css">
 </head>
 <body>
 
 <div class="container">
-    <h1>Жанры</h1>
-    <th:block th:each="genre : ${genres}">
-        <a th:href="@{/genres/{id}(id=${genre.getId()})}"
-                th:text="${genre.getName()}"/>
-    </th:block>
+    <div class="title">
+        <h1 class="title__h1">Жанры</h1>
+        <hr class="title__hr">
+    </div>
 
-    <hr>
-    <a href="/genres/new">Добавить</a>
-    <a href="/">Назад</a>
+    <div class="main-menu main-menu_entities">
+        <div class="menu-item menu-item_entities">
+            <a href="/" class="menu-item__text">Назад</a>
+        </div>
+        <div class="menu-item menu-item_entities">
+            <a href="/genres/new" class="menu-item__text">Добавить</a>
+        </div>
+    </div>
+
+    <div class="main-menu">
+        <div class="menu-item" th:each="genre : ${genres}">
+            <a class="menu-item__text" th:href="@{/genres/{id}(id=${genre.getId()})}"
+               th:text="${genre.getName()}"></a>
+        </div>
+    </div>
+
 </div>
-
 </body>
 </html>

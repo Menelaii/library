@@ -2,23 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Редактировать</title>
     <link rel="stylesheet" href="/../styles/style.css">
 </head>
 <body>
-
 <div class="container">
-    <h1>Редактировать</h1>
+    <div class="title">
+        <h1 class="title__h1">Редактировать</h1>
+        <hr class="title__hr">
+    </div>
 
-    <form th:method="patch" th:action="@{/people/{id}(id=*{id})}" th:object="${person}">
-        <input type="text" placeholder="Иванов Иван Иванович" th:field="*{fullName}">
-        <input type="text" placeholder="02/03/3000" th:field="*{dateOfBirth}">
-        <input type="submit">
+    <form class="main-menu main-menu_entity" th:method="PATCH" th:action="@{/people/{id}(id=*{id})}"
+        th:object="${person}">
+
+        <input class="menu-item text-input" type="text" placeholder="Иванов Иван Иванович" th:field="*{fullName}">
+
+        <input class="menu-item text-input" type="text" placeholder="02/03/3000" th:field="*{dateOfBirth}">
+
+        <div class="menu-item menu-item_entities">
+            <input class="menu-item__button menu-item__text" type="submit">
+        </div>
     </form>
 
-    <hr>
-    <a th:href="@{/people/{id}(id=${person.getId()})}">Назад</a>
+    <div class="main-menu main-menu_entities main-menu_entities_no-margin">
+        <div class="menu-item menu-item_entities">
+            <a class="menu-item__text" th:href="@{/people/{id}(id=${person.getId()})}">Назад</a>
+        </div>
+    </div>
 </div>
-
 </body>
 </html>

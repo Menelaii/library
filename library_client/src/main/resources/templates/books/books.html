@@ -2,20 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Книги</title>
     <link rel="stylesheet" href="../styles/style.css">
 </head>
 <body>
 
 <div class="container">
-    <h1>Книги</h1>
-    <th:block th:each="book : ${books}">
-        <a th:href="@{/books/{id}(id=${book.getId()})}"
-           th:text="${book.getName()}"/>
-    </th:block>
-    <hr>
-    <a href="/books/new">Добавить</a>
-    <a href="/">Назад</a>
+    <div class="title">
+        <h1 class="title__h1">Книги</h1>
+        <hr class="title__hr">
+    </div>
+
+    <div class="main-menu main-menu_entities">
+        <div class="menu-item menu-item_entities">
+            <a href="/" class="menu-item__text">Назад</a>
+        </div>
+        <div class="menu-item menu-item_entities">
+            <a href="/books/new" class="menu-item__text">Добавить</a>
+        </div>
+    </div>
+
+    <div class="main-menu">
+        <div class="menu-item" th:each="book : ${books}">
+            <a class="menu-item__text" th:href="@{/books/{id}(id=${book.getId()})}"
+               th:text="${book.getName()}"></a>
+        </div>
+    </div>
 </div>
 
 </body>
