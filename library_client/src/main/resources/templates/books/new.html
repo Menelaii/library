@@ -3,40 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Новая книга</title>
-    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="/../styles/style.css">
 </head>
 <body>
 
 <div class="container">
-    <h1>Добавить</h1>
+    <div class="title">
+        <h1 class="title__h1">Создать</h1>
+        <hr class="title__hr">
+    </div>
 
-    <form th:method="POST" th:action="@{/books}" th:object="${book}">
-        <input type="text" placeholder="Название" th:field="*{name}">
-        <input type="text" placeholder="Издатель" th:field="*{publisherName}">
+    <form class="main-menu main-menu_entity" th:method="POST" th:action="@{/books}" th:object="${book}">
+        <input class="menu-item text-input" type="text" placeholder="Название" th:field="*{name}">
+        <input class="menu-item text-input" type="text" placeholder="Издатель" th:field="*{publisherName}">
 
-        <label>
-            Автор
-            <select th:field="*{author.id}">
+        <div class="menu-item">
+            <label for="select-author" class="menu-item__text menu-item__text_less-margin">Автор</label>
+            <select id="select-author" class="select" th:field="*{author.id}">
                 <option th:each="author : ${authors}"
-                th:value="${author.getId()}" th:text="${author.getAlias()}"></option>
+                        th:value="${author.getId()}" th:text="${author.getAlias()}"></option>
             </select>
-        </label>
+        </div>
 
-        <label>
-            Жанр
-            <select th:field="*{genre.id}">
+        <div class="menu-item">
+            <label for="select-genre" class="menu-item__text menu-item__text_less-margin">Жанр</label>
+            <select id="select-genre" class="select" th:field="*{genre.id}">
                 <option th:each="genre : ${genres}"
-                th:value="${genre.getId()}" th:text="${genre.getName()}"></option>
+                        th:value="${genre.getId()}" th:text="${genre.getName()}"></option>
             </select>
-        </label>
+        </div>
 
-        <input type="submit">
+        <div class="menu-item menu-item_entities">
+            <input class="menu-item__button menu-item__text" type="submit">
+        </div>
     </form>
 
-    <hr>
-    <a href="/books">Назад</a>
+    <div class="main-menu main-menu_entities main-menu_entities_no-margin">
+        <div class="menu-item menu-item_entities">
+            <a href="/genres" class="menu-item__text">Назад</a>
+        </div>
+    </div>
 </div>
-
-
 </body>
 </html>

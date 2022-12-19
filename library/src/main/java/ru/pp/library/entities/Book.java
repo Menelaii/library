@@ -1,13 +1,10 @@
 package ru.pp.library.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "Book")
@@ -34,13 +31,11 @@ public class Book extends AbstractEntity {
     private Genre genre;
 
     @ManyToOne
-    @JoinColumn(name = "person_id", referencedColumnName = "id")
-    private Person currentOwner;
+    @JoinColumn(name = "library_card_id", referencedColumnName = "id")
+    private LibraryCard currentOwner;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    @Column(name = "taken_at", columnDefinition = "DATE")
-    private LocalDate takenAt;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
+    private List<Record> records;
 
     @Transient
     private boolean expired;
@@ -80,20 +75,20 @@ public class Book extends AbstractEntity {
         this.genre = genre;
     }
 
-    public Person getCurrentOwner() {
+    public LibraryCard getCurrentOwner() {
         return currentOwner;
     }
 
-    public void setCurrentOwner(Person currentOwner) {
+    public void setCurrentOwner(LibraryCard currentOwner) {
         this.currentOwner = currentOwner;
     }
 
-    public LocalDate getTakenAt() {
-        return takenAt;
+    public List<Record> getRecords() {
+        return records;
     }
 
-    public void setTakenAt(LocalDate takenAt) {
-        this.takenAt = takenAt;
+    public void setRecords(List<Record> records) {
+        this.records = records;
     }
 
     public boolean isExpired() {

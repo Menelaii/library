@@ -19,7 +19,7 @@ public class Author extends AbstractEntity {
     @Column(name = "alias", unique = true)
     private String alias;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private List<Book> books;
 
     public Author() {

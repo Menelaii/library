@@ -2,57 +2,72 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="../styles/style.css">
+    <title>Книга</title>
+    <link rel="stylesheet" href="/../styles/style.css">
 </head>
 <body>
 
 <div class="container" th:object="${book}">
-    <h1>Книга</h1>
+    <div class="title">
+        <h1 class="title__h1">Книга</h1>
+        <hr class="title__hr">
+    </div>
 
-    <p th:text="*{'Название: ' + name}">ФИО: Иванов Иван Иванович</p>
-    <p th:text="*{'Издатель: ' + publisherName}">Издатель: ...</p>
+    <div class="main-menu main-menu_entity">
+        <div class="menu-item">
+            <p class="menu-item__text" th:text="*{'Название: ' + name}">ФИО: Иванов Иван Иванович</p>
+        </div>
+        <div class="menu-item">
+            <p class="menu-item__text" th:text="*{'Издатель: ' + publisherName}">Издатель: ...</p>
+        </div>
+        <div class="menu-item">
+            <a class="menu-item__text" th:href="@{/genres/{id}(id=*{genre.getId()})}"
+               th:text="*{'Жанр: ' + genre.getName()}">Жанр: ...</a>
+        </div>
+        <div class="menu-item">
+            <a class="menu-item__text" th:href="@{/authors/{id}(id=*{author.getId()})}"
+               th:text="*{'Автор: ' + author.getAlias()}">Автор: ...</a>
+        </div>
 
-    <a th:href="@{/genres/{id}(id=*{genre.getId()})}"
-       th:text="*{'Жанр: ' + genre.getName()}">Жанр: ...</a>
+        <div class="menu-item menu-item_dynamic" th:if="*{currentOwner == null}">
+            <form th:action="@{/books/{id}/assign(id=*{id})}" th:method="patch">
+                <label for="select" class="menu-item__text menu-item__text_less-margin">Книга свободна. Кому её назначить?</label>
 
-    <a th:href="@{/authors/{id}(id=*{author.getId()})}"
-       th:text="*{'Автор: ' + author.getAlias()}">Автор: ...</a>
-
-    <th:block th:if="*{currentOwner == null}">
-        <form th:action="@{/books/{id}/assign(id=*{id})}" th:method="patch">
-            <label>Книга свободна. Кому её назначить?
-                <select th:object="${person}" th:field="*{id}">
-                    <option th:each="person : ${people}" th:value="${person.getId()}"
-                            th:text="${person.getFullName()}"></option>
+                <select id="select" class="select" th:object="${libraryCard}" th:field="*{id}">
+                    <option th:each="libraryCard : ${libraryCards}" th:value="${libraryCard.getId()}"
+                            th:text="${libraryCard.getFullName()}"></option>
                 </select>
-            </label>
+                <input class="menu-item__button menu-item__text" type="submit" value="Назначить">
+            </form>
+        </div>
 
-            <input type="submit" value="Назначить">
-        </form>
-    </th:block>
+        <div class="menu-item menu-item_dynamic" th:unless="*{currentOwner == null}">
+            <form th:action="@{/books/{id}/release(id=*{id})}" th:method="patch">
+                <label for="btn" class="menu-item__text menu-item__text_less-margin"
+                       th:text="*{'Сейчас книга у: ' + currentOwner.getFullName()}"></label>
+                <input id="btn" class="menu-item__button menu-item__text"
+                       type="submit" value="Освободить книгу">
+            </form>
+        </div>
+    </div>
 
-    <th:block th:unless="*{currentOwner == null}">
-        <p th:text="*{'Сейчас книга у: ' + currentOwner.getFullName()}"><p/>
-        <form th:action="@{/books/{id}/release(id=*{id})}" th:method="patch">
-            <input type="submit" value="Освободить книгу">
-        </form>
-    </th:block>
+    <div class="main-menu main-menu_entities">
+        <div class="menu-item menu-item_entities">
+            <a href="/books" class="menu-item__text">Назад</a>
+        </div>
 
-    <hr>
+        <div class="menu-item menu-item_entities">
+            <form th:action="@{/books/{id}(id=*{id})}" th:method="delete">
+                <input class="menu-item__button menu-item__text" type="submit" value="Удалить">
+            </form>
+        </div>
 
-    <form th:action="@{/books/{id}/edit(id=*{id})}">
-        <input type="submit" value="Редактировать">
-    </form>
-
-    <form th:method="DELETE" th:action="@{/books/{id}(id=*{id})}">
-        <input type="submit" value="Удалить">
-    </form>
-
-    <form action="/books">
-        <input type="submit" value="Назад">
-    </form>
+        <div class="menu-item menu-item_entities">
+            <form th:action="@{/books/{id}/edit(id=*{id})}" th:method="get">
+                <input class="menu-item__button menu-item__text" type="submit" value="Редактировать">
+            </form>
+        </div>
+    </div>
 </div>
-
 </body>
 </html>

@@ -1,8 +1,9 @@
 package ru.pp.library_client.dto;
 
-public class PersonDTO {
+public class LibraryCardDTO {
 
     private Integer id;
+
     private String fullName;
 
     public Integer getId() {

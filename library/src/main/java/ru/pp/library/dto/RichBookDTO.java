@@ -21,7 +21,7 @@ public class RichBookDTO extends BookDTO {
     private AuthorDTO author;
     @NotNull(message = "Жанр не должен быть пустым")
     private GenreDTO genre;
-    private PersonDTO currentOwner;
+    private LibraryCardDTO currentOwner;
 
     public String getPublisherName() {
         return publisherName;
@@ -47,11 +47,11 @@ public class RichBookDTO extends BookDTO {
         this.genre = genre;
     }
 
-    public PersonDTO getCurrentOwner() {
+    public LibraryCardDTO getCurrentOwner() {
         return currentOwner;
     }
 
-    public void setCurrentOwner(PersonDTO currentOwner) {
+    public void setCurrentOwner(LibraryCardDTO currentOwner) {
         this.currentOwner = currentOwner;
     }
 

@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ru.pp.library.dto.PersonDTO;
-import ru.pp.library.dto.RichPersonDTO;
-import ru.pp.library.entities.Person;
+import ru.pp.library.dto.LibraryCardDTO;
+import ru.pp.library.dto.RichLibraryCardDTO;
+import ru.pp.library.entities.LibraryCard;
 import ru.pp.library.services.PeopleService;
 
 @RestController
@@ -38,7 +38,7 @@ public class PeopleController extends AbstractController {
     }
 
     @GetMapping
-    public List<PersonDTO> getPeople() {
+    public List<LibraryCardDTO> getPeople() {
         return peopleService.findAll()
                 .stream()
                 .map(this::convertToDTO)
@@ -46,12 +46,12 @@ public class PeopleController extends AbstractController {
     }
 
     @GetMapping("/{id}")
-    public RichPersonDTO getPerson(@PathVariable("id") int id) {
+    public RichLibraryCardDTO getPerson(@PathVariable("id") int id) {
         return convertToRichDTO(peopleService.findOne(id));
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid RichPersonDTO richPersonDTO,
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid RichLibraryCardDTO richPersonDTO,
         BindingResult bindingResult) {
 
         throwInvalidIfHasErrors(bindingResult);
@@ -69,7 +69,7 @@ public class PeopleController extends AbstractController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<HttpStatus> update(@PathVariable("id") int id,
-                                             @RequestBody @Valid RichPersonDTO richPersonDTO,
+                                             @RequestBody @Valid RichLibraryCardDTO richPersonDTO,
                                              BindingResult bindingResult) {
 
         throwInvalidIfHasErrors(bindingResult);
@@ -79,15 +79,15 @@ public class PeopleController extends AbstractController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    private PersonDTO convertToDTO(Person person) {
-        return modelMapper.map(person, PersonDTO.class);
+    private LibraryCardDTO convertToDTO(LibraryCard libraryCard) {
+        return modelMapper.map(libraryCard, LibraryCardDTO.class);
     }
 
-    private RichPersonDTO convertToRichDTO(Person person) {
-        return modelMapper.map(person, RichPersonDTO.class);
+    private RichLibraryCardDTO convertToRichDTO(LibraryCard libraryCard) {
+        return modelMapper.map(libraryCard, RichLibraryCardDTO.class);
     }
 
-    private Person convertToEntity(RichPersonDTO richPersonDTO) {
-        return modelMapper.map(richPersonDTO, Person.class);
+    private LibraryCard convertToEntity(RichLibraryCardDTO richPersonDTO) {
+        return modelMapper.map(richPersonDTO, LibraryCard.class);
     }
 }

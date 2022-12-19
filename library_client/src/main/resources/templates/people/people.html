@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Посетители</title>
+    <title>Читательские билеты</title>
     <link rel="stylesheet" href="/../styles/style.css">
 </head>
 <body>
@@ -22,9 +22,9 @@
     </div>
 
     <div class="main-menu">
-        <div class="menu-item" th:each="person : ${people}">
-            <a class="menu-item__text" th:href="@{/people/{id}(id=${person.getId()})}"
-               th:text="${person.getFullName()}"></a>
+        <div class="menu-item" th:each="libraryCard : ${libraryCards}">
+            <a class="menu-item__text" th:href="@{/people/{id}(id=${libraryCard.getId()})}"
+               th:text="${libraryCard.getFullName()}"></a>
         </div>
     </div>
 </div>

@@ -4,58 +4,58 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.pp.library_client.communication.PeopleCommunication;
-import ru.pp.library_client.dto.RichPersonDTO;
+import ru.pp.library_client.communication.LibraryCardsCommunication;
+import ru.pp.library_client.dto.RichLibraryCardDTO;
 
 @Controller
 @RequestMapping("/people")
 public class PeopleController {
-    private final PeopleCommunication peopleCommunication;
+    private final LibraryCardsCommunication libraryCardsCommunication;
 
     @Autowired
-    public PeopleController(PeopleCommunication peopleCommunication) {
-        this.peopleCommunication = peopleCommunication;
+    public PeopleController(LibraryCardsCommunication libraryCardsCommunication) {
+        this.libraryCardsCommunication = libraryCardsCommunication;
     }
 
     @GetMapping
     public String index(Model model) {
-        model.addAttribute("people", peopleCommunication.getPeople());
+        model.addAttribute("libraryCards", libraryCardsCommunication.getLibraryCards());
         return "people/people";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("person", peopleCommunication.getPerson(id));
+        model.addAttribute("libraryCard", libraryCardsCommunication.getPerson(id));
         return "people/person";
     }
 
     @GetMapping("/new")
     public String newPerson(Model model) {
-        model.addAttribute("person", new RichPersonDTO());
+        model.addAttribute("libraryCard", new RichLibraryCardDTO());
         return "people/new";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        model.addAttribute("person", peopleCommunication.getPerson(id));
+        model.addAttribute("libraryCard", libraryCardsCommunication.getPerson(id));
         return "people/edit";
     }
 
     @PostMapping
-    public String create(@ModelAttribute("person") RichPersonDTO person) {
-        peopleCommunication.save(person);
+    public String create(@ModelAttribute("libraryCard") RichLibraryCardDTO libraryCard) {
+        libraryCardsCommunication.save(libraryCard);
         return "redirect:/people";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        peopleCommunication.delete(id);
+        libraryCardsCommunication.delete(id);
         return "redirect:/people";
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("person") RichPersonDTO person) {
-        peopleCommunication.save(person);
+    public String update(@ModelAttribute("libraryCard") RichLibraryCardDTO libraryCard) {
+        libraryCardsCommunication.save(libraryCard);
         return "redirect:/people";
     }
 }

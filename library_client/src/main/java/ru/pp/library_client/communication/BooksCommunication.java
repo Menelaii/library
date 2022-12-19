@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import ru.pp.library_client.dto.BookDTO;
-import ru.pp.library_client.dto.PersonDTO;
+import ru.pp.library_client.dto.LibraryCardDTO;
 import ru.pp.library_client.dto.RichBookDTO;
 
 @Component
@@ -35,9 +35,9 @@ public class BooksCommunication extends Communication {
         RestTemplate.delete(ServiceUrl + "/books/" + id);
     }
 
-    public void assign(int id, PersonDTO personDTO) {
+    public void assign(int id, LibraryCardDTO libraryCardDTO) {
         RestTemplate.patchForObject(ServiceUrl + "/books/" + id + "/assign",
-                personDTO, String.class);
+                libraryCardDTO, String.class);
     }
 
     public void release(int id) {

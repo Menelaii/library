@@ -3,7 +3,7 @@ package ru.pp.library.dto;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-public class PersonDTO {
+public class LibraryCardDTO {
 
     private Integer id;
 

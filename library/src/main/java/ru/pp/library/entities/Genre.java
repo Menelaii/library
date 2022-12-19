@@ -15,7 +15,7 @@ public class Genre extends AbstractEntity {
     @Column(name = "name", unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "genre")
+    @OneToMany(mappedBy = "genre", cascade = CascadeType.REMOVE)
     private List<Book> books;
 
     public Genre() {

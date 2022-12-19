@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ru.pp.library.dto.BookDTO;
-import ru.pp.library.dto.PersonDTO;
+import ru.pp.library.dto.LibraryCardDTO;
 import ru.pp.library.dto.RichBookDTO;
 import ru.pp.library.entities.Book;
-import ru.pp.library.entities.Person;
+import ru.pp.library.entities.LibraryCard;
 import ru.pp.library.services.BooksService;
 
 @RestController
@@ -82,8 +82,8 @@ public class BooksController extends AbstractController {
     }
 
     @PatchMapping("/{id}/assign")
-    public ResponseEntity<HttpStatus> assign(@PathVariable("id") int id, @RequestBody PersonDTO personDTO) {
-        booksService.assign(id, modelMapper.map(personDTO, Person.class));
+    public ResponseEntity<HttpStatus> assign(@PathVariable("id") int id, @RequestBody LibraryCardDTO libraryCardDTO) {
+        booksService.assign(id, modelMapper.map(libraryCardDTO, LibraryCard.class));
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

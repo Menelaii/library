@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.pp.library_client.communication.AuthorsCommunication;
 import ru.pp.library_client.communication.BooksCommunication;
 import ru.pp.library_client.communication.GenresCommunication;
-import ru.pp.library_client.communication.PeopleCommunication;
-import ru.pp.library_client.dto.PersonDTO;
+import ru.pp.library_client.communication.LibraryCardsCommunication;
+import ru.pp.library_client.dto.LibraryCardDTO;
 import ru.pp.library_client.dto.RichBookDTO;
 
 @Controller
@@ -16,14 +16,14 @@ import ru.pp.library_client.dto.RichBookDTO;
 public class BooksController {
 
     private final BooksCommunication booksCommunication;
-    private final PeopleCommunication peopleCommunication;
+    private final LibraryCardsCommunication libraryCardsCommunication;
     private final GenresCommunication genresCommunication;
     private final AuthorsCommunication authorsCommunication;
 
     @Autowired
-    public BooksController(BooksCommunication booksCommunication, PeopleCommunication peopleCommunication, GenresCommunication genresCommunication, AuthorsCommunication authorsCommunication) {
+    public BooksController(BooksCommunication booksCommunication, LibraryCardsCommunication libraryCardsCommunication, GenresCommunication genresCommunication, AuthorsCommunication authorsCommunication) {
         this.booksCommunication = booksCommunication;
-        this.peopleCommunication = peopleCommunication;
+        this.libraryCardsCommunication = libraryCardsCommunication;
         this.genresCommunication = genresCommunication;
         this.authorsCommunication = authorsCommunication;
     }
@@ -40,8 +40,8 @@ public class BooksController {
         model.addAttribute("book", book);
 
         if(book.getCurrentOwner() == null) {
-            model.addAttribute("people", peopleCommunication.getPeople());
-            model.addAttribute("person", new PersonDTO());
+            model.addAttribute("libraryCards", libraryCardsCommunication.getLibraryCards());
+            model.addAttribute("libraryCard", new LibraryCardDTO());
         }
 
         return "books/book";
@@ -81,8 +81,8 @@ public class BooksController {
     }
 
     @PatchMapping("/{id}/assign")
-    public String assign(@PathVariable("id") int id, @ModelAttribute("person") PersonDTO person) {
-        booksCommunication.assign(id, person);
+    public String assign(@PathVariable("id") int id, @ModelAttribute("libraryCard") LibraryCardDTO libraryCardDTO) {
+        booksCommunication.assign(id, libraryCardDTO);
         return "redirect:/books/" + id;
     }
 

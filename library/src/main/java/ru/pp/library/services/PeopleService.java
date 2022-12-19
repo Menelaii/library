@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ru.pp.library.entities.Person;
+import ru.pp.library.entities.LibraryCard;
+import ru.pp.library.entities.Record;
 import ru.pp.library.exceptions.NotFoundException;
 import ru.pp.library.repositories.PeopleRepository;
 
@@ -29,29 +30,31 @@ public class PeopleService {
         this.peopleRepository = peopleRepository;
     }
 
-    public List<Person> findAll() {
+    public List<LibraryCard> findAll() {
         return peopleRepository.findAll();
     }
 
-    public Person findOne(int id) {
-        Optional<Person> person = peopleRepository.findById(id);
+    public LibraryCard findOne(int id) {
+        Optional<LibraryCard> libraryCard = peopleRepository.findById(id);
 
-        if (person.isPresent()) {
-            Hibernate.initialize(person.get().getBooks());
-            person.get().getBooks().forEach(
-                    book -> {
-                        if(DAYS.between(book.getTakenAt(),LocalDate.now()) > expiredAfterInDays) {
-                            book.setExpired(true);
-                        }
-                    });
+        if (libraryCard.isPresent()) {
+            List<Record> records = libraryCard.get().getRecords();
+            for (var record : records) {
+                if(record.getReturnedAt() != null)
+                    continue;
+
+                if(DAYS.between(record.getTakenAt(), LocalDate.now()) > expiredAfterInDays) {
+                    record.getBook().setExpired(true);
+                }
+            }
         }
 
-        return person.orElseThrow(NotFoundException::new);
+        return libraryCard.orElseThrow(NotFoundException::new);
     }
 
     @Transactional
-    public void save(Person person) {
-        peopleRepository.save(person);
+    public void save(LibraryCard libraryCard) {
+        peopleRepository.save(libraryCard);
     }
 
     @Transactional
@@ -61,10 +64,10 @@ public class PeopleService {
     }
 
     @Transactional
-    public void update(int id, Person person) {
+    public void update(int id, LibraryCard libraryCard) {
         throwNotFoundIfNotExist(id);
-        person.setId(id);
-        peopleRepository.save(person);
+        libraryCard.setId(id);
+        peopleRepository.save(libraryCard);
     }
 
     private void throwNotFoundIfNotExist(int id) {

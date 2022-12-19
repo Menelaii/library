@@ -1,7 +1,6 @@
 package ru.pp.library.services;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,18 +9,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ru.pp.library.entities.Book;
-import ru.pp.library.entities.Person;
+import ru.pp.library.entities.LibraryCard;
+import ru.pp.library.entities.Record;
 import ru.pp.library.exceptions.NotFoundException;
 import ru.pp.library.repositories.BooksRepository;
+import ru.pp.library.repositories.RecordRepository;
 
 @Service
 public class BooksService {
 
     private BooksRepository booksRepository;
+    private RecordRepository recordRepository;
 
     @Autowired
-    public BooksService(BooksRepository booksRepository) {
+    public BooksService(BooksRepository booksRepository, RecordRepository recordRepository) {
         this.booksRepository = booksRepository;
+        this.recordRepository = recordRepository;
     }
 
     public List<Book> findAll() {
@@ -57,25 +60,29 @@ public class BooksService {
     }
 
     @Transactional
-    public void assign(int id, Person person) {
+    public void assign(int id, LibraryCard libraryCard) {
         throwNotFoundIfNotExist(id);
+        Book book = booksRepository.findById(id).get();
+        book.setCurrentOwner(libraryCard);
 
-        booksRepository.findById(id).ifPresent(
-                book -> {
-                    book.setCurrentOwner(person);
-                    book.setTakenAt(LocalDate.now());
-                });
+        Record record = new Record();
+        record.setBook(book);
+        record.setLibraryCard(libraryCard);
+        record.setTakenAt(LocalDate.now());
+
+        recordRepository.save(record);
     }
 
     @Transactional
     public void release(int id) {
         throwNotFoundIfNotExist(id);
+        Book book = booksRepository.findById(id).get();
+        book.setCurrentOwner(null);
 
-        booksRepository.findById(id).ifPresent(
-                book -> {
-                    book.setCurrentOwner(null);
-                    book.setTakenAt(null);
-                });
+        recordRepository
+                .findByBook_IdAndReturnedAtIsNull(book.getId())
+                .get()
+                .setReturnedAt(LocalDate.now());
     }
 
     private void throwNotFoundIfNotExist(int id) {

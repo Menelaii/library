@@ -6,15 +6,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 public class RichBookDTO extends BookDTO {
+
     private String publisherName;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate takenAt;
-
     private AuthorDTO author;
     private GenreDTO genre;
-    private PersonDTO currentOwner;
+    private LibraryCardDTO currentOwner;
 
     public String getPublisherName() {
         return publisherName;
@@ -40,11 +40,11 @@ public class RichBookDTO extends BookDTO {
         this.genre = genre;
     }
 
-    public PersonDTO getCurrentOwner() {
+    public LibraryCardDTO getCurrentOwner() {
         return currentOwner;
     }
 
-    public void setCurrentOwner(PersonDTO currentOwner) {
+    public void setCurrentOwner(LibraryCardDTO currentOwner) {
         this.currentOwner = currentOwner;
     }
 
